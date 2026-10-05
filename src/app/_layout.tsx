@@ -39,6 +39,10 @@ export default function RootLayout() {
           <Stack.Screen name="activity/[id]" />
           <Stack.Screen name="log" options={{ presentation: 'formSheet', sheetAllowedDetents: [0.92], sheetGrabberVisible: true, sheetCornerRadius: 28 }} />
           <Stack.Screen name="new-activity" options={{ presentation: 'modal' }} />
+          <Stack.Screen name="circle/[id]" />
+          <Stack.Screen name="circle-new" options={{ presentation: 'modal' }} />
+          <Stack.Screen name="join" options={{ presentation: 'modal' }} />
+          <Stack.Screen name="circle-share" options={{ presentation: 'modal' }} />
         </Stack>
         <ToastHost />
       </ThemeProvider>

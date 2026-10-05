@@ -2,11 +2,13 @@ import { Redirect } from 'expo-router';
 import { Tabs } from 'expo-router/tabs';
 
 import { TabBar } from '@/components/ui/TabBar';
+import { useSocialSync } from '@/social/useSocialSync';
 import { useApp } from '@/store';
 import { color } from '@/theme';
 
 export default function TabsLayout() {
   const hasData = useApp((s) => s.data !== null);
+  useSocialSync();
   if (!hasData) return <Redirect href="/onboarding" />;
   return (
     <Tabs

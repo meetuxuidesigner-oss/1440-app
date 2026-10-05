@@ -143,7 +143,8 @@ export function weeklyStreak(data: AppData, activity: Activity, today: DayKey, n
 }
 
 
-export type DayMark = 'done' | 'rest' | 'gap' | 'dayOff' | 'upcoming' | 'today';
+/** 'blank' is what friends see instead of a missed day: misses are never shown to a circle. */
+export type DayMark = 'done' | 'rest' | 'gap' | 'dayOff' | 'upcoming' | 'today' | 'blank';
 
 /** One mark per day for an activity's week strip. */
 export function weekMarks(data: AppData, activity: Activity, today: DayKey, now: number): { day: DayKey; mark: DayMark }[] {

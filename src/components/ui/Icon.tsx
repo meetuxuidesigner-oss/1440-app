@@ -16,7 +16,10 @@ export type IconName =
   | 'check'
   | 'moon'
   | 'flame'
-  | 'clock';
+  | 'clock'
+  | 'sparkle'
+  | 'share'
+  | 'lock';
 
 interface Props {
   name: IconName;
@@ -65,6 +68,27 @@ export function Icon({ name, size = 24, color = palette.text, filled }: Props) {
           fill={color}
           d="M12 2.5c.5 3-1.6 4.6-3 6.4C7.7 10.6 7 12.3 7 14a5 5 0 0 0 10 0c0-1.7-.7-3.2-1.6-4.3-.3 1.2-1 2-2 2.3.6-3.4-.2-6.8-1.4-9.5z"
         />
+      )}
+      {name === 'sparkle' && (
+        <Path
+          fill={filled ? color : 'none'}
+          stroke={color}
+          strokeWidth={1.8}
+          strokeLinejoin="round"
+          d="M12 3c.6 4.2 2.8 6.4 7 7-4.2.6-6.4 2.8-7 7-.6-4.2-2.8-6.4-7-7 4.2-.6 6.4-2.8 7-7z"
+        />
+      )}
+      {name === 'share' && (
+        <>
+          <Path {...s} d="M12 15V4M8 8l4-4 4 4" />
+          <Path {...s} d="M6 11v7a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-7" />
+        </>
+      )}
+      {name === 'lock' && (
+        <>
+          <Rect {...s} x={5.5} y={10.5} width={13} height={9.5} rx={2.5} />
+          <Path {...s} d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5" />
+        </>
       )}
       {name === 'clock' && (
         <>

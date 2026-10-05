@@ -13,7 +13,17 @@ Your day is a glass sphere. Each activity you do pours a layer of colour into it
 - Week: where each activity stands this week
 - Local-first: data stays on the device
 
-Next: weekly statement, rest-day planning and Day Off (M2), Circles with accounts (M3), Live Activity and bedtime check (M4).
+## Milestone 3: Circles (this version)
+
+- Small private groups, up to 10 people, joined with a 6-letter code
+- You choose what each circle sees, per activity. Everything starts private
+- Friends see ✓ days and streaks. Never minutes, times, or missed days
+- One-tap kudos with a soft ripple; tap again to take it back
+- No feeds, no leaderboards
+- Backend: Supabase (Postgres). Privacy rules live in the database (`supabase/migrations`) and are tested (`npm run test:db`)
+- Sign-in is invisible for now (anonymous account + first name). Apple / Google sign-in comes with the native build
+
+Next: weekly statement, rest-day planning and Day Off (M2), Live Activity and bedtime check (M4).
 
 ## Run it
 
@@ -26,11 +36,12 @@ npm run web           # or open in the browser
 ## Checks
 
 ```bash
-npm test              # domain rules (day boundaries, sphere fill, streaks, Day Off maths)
+npm test              # domain rules (day boundaries, sphere fill, streaks, Day Off maths, what circles see)
+npm run test:db       # Circles privacy rules, run against a real Postgres in memory
 npm run typecheck
 npx expo lint
 ```
 
 ## Stack
 
-Expo SDK 57 · Expo Router · React Native Skia (sphere) · Reanimated 4 · Zustand + AsyncStorage · Inter
+Expo SDK 57 · Expo Router · React Native Skia (sphere) · Reanimated 4 · Zustand + AsyncStorage · Supabase · Inter

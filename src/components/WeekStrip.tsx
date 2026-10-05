@@ -15,6 +15,7 @@ const WORD: Record<DayMark, string> = {
   dayOff: 'day off',
   upcoming: 'upcoming',
   today: 'today',
+  blank: 'no check',
 };
 
 /** One week of an activity. A planned rest day looks calm, not like a failure. */
@@ -33,7 +34,7 @@ export function WeekStrip({ marks, tint, compact }: { marks: { day: DayKey; mark
               mark === 'rest' && { backgroundColor: withAlpha(tint, 0.14), borderColor: withAlpha(tint, 0.4), borderStyle: 'dashed', borderWidth: 1.5 },
               mark === 'gap' && { backgroundColor: color.surface2 },
               mark === 'dayOff' && { backgroundColor: 'rgba(135,125,255,0.16)' },
-              mark === 'upcoming' && { borderColor: color.hairline, borderWidth: 1.5 },
+              (mark === 'upcoming' || mark === 'blank') && { borderColor: color.hairline, borderWidth: 1.5 },
               mark === 'today' && { borderColor: tint, borderWidth: 2 },
             ]}>
             {mark === 'done' ? <Icon name="check" size={d * 0.5} color={color.bg} /> : null}

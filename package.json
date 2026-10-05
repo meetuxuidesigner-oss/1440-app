@@ -7,6 +7,7 @@
     "@expo/ui": "~57.0.21",
     "@react-native-async-storage/async-storage": "2.2.0",
     "@shopify/react-native-skia": "2.6.2",
+    "@supabase/supabase-js": "^2.117.2",
     "expo": "~57.0.26",
     "expo-constants": "~57.0.20",
     "expo-device": "~57.0.2",
@@ -29,11 +30,13 @@
     "react-native-safe-area-context": "~5.7.0",
     "react-native-screens": "~4.26.0",
     "react-native-svg": "15.15.4",
+    "react-native-url-polyfill": "^4.0.0",
     "react-native-web": "~0.21.0",
     "react-native-worklets": "0.10.1",
     "zustand": "^5.0.15"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.5.8",
     "@types/jest": "^30.0.0",
     "@types/react": "~19.2.2",
     "babel-jest": "^30.5.2",
@@ -50,7 +53,8 @@
     "lint": "expo lint",
     "typecheck": "tsc --noEmit",
     "test": "TZ=UTC jest",
-    "postinstall": "setup-skia-web public"
+    "postinstall": "setup-skia-web public",
+    "test:db": "node supabase/tests/circles.test.mjs"
   },
   "private": true,
   "jest": {
