@@ -16,7 +16,7 @@ import { useApp } from '@/store';
 import { color, radius, type } from '@/theme';
 
 export default function Home() {
-  const { data, now, minute, running, day, fill, segments, arcNow, bedtime } = useToday();
+  const { data, now, minute, running, day, fill, segments, arcNow, bedtime, daySettings, nextWake } = useToday();
   const startTimer = useApp((s) => s.startTimer);
   const stopTimer = useApp((s) => s.stopTimer);
   const insets = useSafeAreaInsets();
@@ -35,7 +35,7 @@ export default function Home() {
     }
   }, [fill, day]);
 
-  if (!data || !fill || !day) return null;
+  if (!data || !fill || !day || !daySettings) return null;
 
   const activities = activeActivities(data);
   const hint = nextHint(data, fill, day, minute);
@@ -48,7 +48,7 @@ export default function Home() {
       <View style={styles.header}>
         <View style={{ flex: 1 }}>
           <Text style={styles.date}>
-            {formatDayLong(day)} · woke {formatClockMin(data.settings.wake)}
+            {formatDayLong(day)} · woke {formatClockMin(daySettings.wake)}
           </Text>
           <Text style={styles.title} accessibilityRole="header">
             Today
@@ -64,7 +64,7 @@ export default function Home() {
       </View>
 
       <View style={styles.sphere}>
-        <DaySphere size={size} fill={fill} settings={data.settings} segments={segments} now={arcNow} bedtime={bedtime} />
+        <DaySphere size={size} fill={fill} settings={daySettings} segments={segments} now={arcNow} bedtime={bedtime} nextWake={nextWake} />
       </View>
 
       {hint ? (

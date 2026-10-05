@@ -11,7 +11,8 @@ import { SheetHeader } from '@/components/ui/SheetHeader';
 import { tap } from '@/lib/haptics';
 import { activeActivities } from '@/logic/day';
 import { checkLog, type LogCheck } from '@/logic/log';
-import { dayOf, dayWindow, formatClock, formatDayShort, formatDuration } from '@/logic/time';
+import { dayAt, windowOf } from '@/logic/schedule';
+import { formatClock, formatDayShort, formatDuration } from '@/logic/time';
 import { useApp } from '@/store';
 import { activityColor, color, radius, type } from '@/theme';
 
@@ -54,9 +55,9 @@ export default function Log() {
   if (!data) return null;
   const check = checkLog(data, start, end, now);
   const error = message(check, names);
-  const w = dayWindow(dayOf(start, data.settings), data.settings);
+  const w = windowOf(data, dayAt(data, start));
   const inSleep = check.ok && end > w.sleepStart;
-  const sameDay = dayOf(start, data.settings) === dayOf(now, data.settings);
+  const sameDay = dayAt(data, start) === dayAt(data, now);
 
   const save = (replaceId?: string) => {
     if (!activityId) return;
@@ -116,7 +117,7 @@ export default function Log() {
               {formatClock(start)} – {formatClock(end)}
             </Text>
             <Text style={styles.rangeSub}>
-              {endsAgo === 0 ? 'Ended just now' : `${sameDay ? 'Today' : formatDayShort(dayOf(start, data.settings))} · ended ${formatDuration(endsAgo)} ago`}
+              {endsAgo === 0 ? 'Ended just now' : `${sameDay ? 'Today' : formatDayShort(dayAt(data, start))} · ended ${formatDuration(endsAgo)} ago`}
             </Text>
           </View>
           <Press

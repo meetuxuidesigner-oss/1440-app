@@ -39,8 +39,19 @@ export interface RestDay {
   day: DayKey;
 }
 
+/** Wake and sleep times that were used before a change. */
+export interface PastSchedule {
+  /** These times applied to every moment before this (ms). */
+  until: number;
+  wake: ClockMin;
+  sleep: ClockMin;
+}
+
 export interface AppData {
+  /** Current settings. Wake and sleep may be a change that starts tomorrow (see pastSchedules). */
   settings: Settings;
+  /** Earlier wake/sleep times, oldest first, so changing them never rewrites past days. */
+  pastSchedules?: PastSchedule[];
   activities: Activity[];
   sessions: Session[];
   restDays: RestDay[];

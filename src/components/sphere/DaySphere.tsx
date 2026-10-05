@@ -19,6 +19,8 @@ interface Props {
   /** 0 at wake time, 1 at bedtime. */
   now?: number;
   bedtime?: boolean;
+  /** Wake time that starts tomorrow (it can differ after a schedule change). */
+  nextWake?: number;
   /** Replaces the centre text (e.g. onboarding preview). */
   center?: ReactNode;
 }
@@ -29,7 +31,7 @@ const ARC_SWEEP = 240;
 /** Liquid body colours are darkened so white text on top stays readable. */
 const bodyOf = (hex: string) => mix(hex, '#121215', 0.58);
 
-export function DaySphere({ size, fill, settings, segments = [], now, bedtime, center }: Props) {
+export function DaySphere({ size, fill, settings, segments = [], now, bedtime, nextWake, center }: Props) {
   const reduced = useReducedMotion();
   const layers: SphereLayer[] = fill.layers.map((l) => ({
     key: l.activityId,
@@ -65,7 +67,7 @@ export function DaySphere({ size, fill, settings, segments = [], now, bedtime, c
   }
   if (bedtime && fill.state !== 'dayOff') {
     label = 'well spent · day done';
-    sub = `New day at ${formatClockMin(settings.wake)}`;
+    sub = `New day at ${formatClockMin(nextWake ?? settings.wake)}`;
   }
 
   // Scales with the sphere so "1h 35m" always fits inside the glass (web can't auto-shrink text).

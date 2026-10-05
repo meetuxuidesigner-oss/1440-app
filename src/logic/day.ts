@@ -1,4 +1,5 @@
-import { addDays, dayOf, dayWindow, overlapMin, weekDays } from './time';
+import { dayAt, windowOf } from './schedule';
+import { addDays, overlapMin, weekDays } from './time';
 import type { Activity, AppData, DayKey, Session } from './types';
 
 export function activeActivities(data: AppData): Activity[] {
@@ -12,14 +13,14 @@ export function runningSession(data: AppData): Session | undefined {
 /** Sessions that started in this day (a session belongs to the day it started in). */
 export function sessionsOn(data: AppData, day: DayKey, activityId?: string): Session[] {
   return data.sessions
-    .filter((s) => dayOf(s.start, data.settings) === day && (!activityId || s.activityId === activityId))
+    .filter((s) => dayAt(data, s.start) === day && (!activityId || s.activityId === activityId))
     .sort((a, b) => a.start - b.start);
 }
 
 /** Minutes that count: only the awake part of the day. Time inside the sleep window shows but earns nothing. */
 export function countedMinutes(data: AppData, session: Session, now: number): number {
-  const day = dayOf(session.start, data.settings);
-  const w = dayWindow(day, data.settings);
+  const day = dayAt(data, session.start);
+  const w = windowOf(data, day);
   return overlapMin(session.start, session.end ?? now, w.start, w.sleepStart);
 }
 
@@ -121,7 +122,7 @@ export function dailyFill(data: AppData, day: DayKey, now: number): DailyFill {
 
 /** Weeks in a row the activity met its weekly target. The current week counts once met; fully-off weeks are skipped. */
 export function weeklyStreak(data: AppData, activity: Activity, today: DayKey, now: number): number {
-  const createdDay = dayOf(activity.createdAt, data.settings);
+  const createdDay = dayAt(data, activity.createdAt);
   let streak = 0;
   let cursor = today;
   const current = weekResult(data, activity, cursor, now);
@@ -161,7 +162,7 @@ export function weekMarks(data: AppData, activity: Activity, today: DayKey, now:
 
 /** Position on the awake-day arc, 0 at wake time, 1 at bedtime. */
 export function awakeFraction(data: AppData, day: DayKey, t: number): number {
-  const w = dayWindow(day, data.settings);
+  const w = windowOf(data, day);
   return Math.min(1, Math.max(0, (t - w.start) / (w.sleepStart - w.start)));
 }
 

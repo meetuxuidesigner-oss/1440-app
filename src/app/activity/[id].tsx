@@ -14,7 +14,8 @@ import { withAlpha } from '@/lib/color';
 import { bump } from '@/lib/haptics';
 import { countedMinutes, minutesOn, weekMarks, weekResult, weeklyStreak } from '@/logic/day';
 import { MAX_BACKFILL_DAYS } from '@/logic/log';
-import { addDays, dayOf, formatClock, formatDayLong, formatDuration } from '@/logic/time';
+import { dayAt } from '@/logic/schedule';
+import { addDays, formatClock, formatDayLong, formatDuration } from '@/logic/time';
 import { useApp } from '@/store';
 import { activityColor, color, radius, type } from '@/theme';
 
@@ -46,11 +47,11 @@ export default function ActivityDetail() {
 
   const oldest = addDays(day, -MAX_BACKFILL_DAYS);
   const recent = data.sessions
-    .filter((s) => s.activityId === activity.id && dayOf(s.start, data.settings) >= oldest)
+    .filter((s) => s.activityId === activity.id && dayAt(data, s.start) >= oldest)
     .sort((a, b) => b.start - a.start);
   const byDay = new Map<string, typeof recent>();
   for (const s of recent) {
-    const k = dayOf(s.start, data.settings);
+    const k = dayAt(data, s.start);
     byDay.set(k, [...(byDay.get(k) ?? []), s]);
   }
 

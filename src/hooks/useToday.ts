@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
 
 import { arcSegments, awakeFraction, dailyFill, runningSession } from '@/logic/day';
-import { dayOf, dayWindow } from '@/logic/time';
+import { dayAt, settingsForDay, windowOf } from '@/logic/schedule';
+import { addDays } from '@/logic/time';
 import { useApp, useNow } from '@/store';
 
 const MIN = 60_000;
@@ -18,8 +19,8 @@ export function useToday() {
 
   const view = useMemo(() => {
     if (!data) return null;
-    const day = dayOf(minute, data.settings);
-    const w = dayWindow(day, data.settings);
+    const day = dayAt(data, minute);
+    const w = windowOf(data, day);
     return {
       day,
       fill: dailyFill(data, day, minute),
@@ -27,6 +28,10 @@ export function useToday() {
       arcNow: awakeFraction(data, day, minute),
       bedtime: minute >= w.sleepStart,
       window: w,
+      /** Wake/sleep times today is lived with. */
+      daySettings: settingsForDay(data, day),
+      /** When tomorrow starts (it may use new times). */
+      nextWake: settingsForDay(data, addDays(day, 1)).wake,
     };
   }, [data, minute]);
 

@@ -1,5 +1,6 @@
 import { activeActivities, weekMarks, weekResult, weeklyStreak } from '@/logic/day';
-import { dayOf, weekDays } from '@/logic/time';
+import { dayAt } from '@/logic/schedule';
+import { weekDays } from '@/logic/time';
 import type { AppData } from '@/logic/types';
 
 import type { Circle, Member, SharedActivity, Snapshot } from './types';
@@ -9,7 +10,7 @@ import type { Circle, Member, SharedActivity, Snapshot } from './types';
  * and for each one only ✓ days and the streak. Minutes are never included.
  */
 export function buildSnapshot(data: AppData, sharedIds: string[], now: number): Snapshot {
-  const today = dayOf(now, data.settings);
+  const today = dayAt(data, now);
   const week = weekDays(today, data.settings.statementDay)[0];
   const activities: SharedActivity[] = activeActivities(data)
     .filter((a) => sharedIds.includes(a.id))

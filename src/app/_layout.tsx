@@ -43,6 +43,7 @@ export default function RootLayout() {
           <Stack.Screen name="circle-new" options={{ presentation: 'modal' }} />
           <Stack.Screen name="join" options={{ presentation: 'modal' }} />
           <Stack.Screen name="circle-share" options={{ presentation: 'modal' }} />
+          <Stack.Screen name="schedule" options={{ presentation: 'modal' }} />
         </Stack>
         <ToastHost />
       </ThemeProvider>

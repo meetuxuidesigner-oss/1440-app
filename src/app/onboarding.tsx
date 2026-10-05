@@ -8,14 +8,15 @@ import { ActivityForm, isDraftValid, type ActivityDraft } from '@/components/Act
 import { DaySphere } from '@/components/sphere/DaySphere';
 import { Button } from '@/components/ui/Button';
 import { Icon } from '@/components/ui/Icon';
+import { TimeStepper } from '@/components/TimeStepper';
 import { Press } from '@/components/ui/Press';
 import { tap } from '@/lib/haptics';
 import type { DailyFill } from '@/logic/day';
 import { DEFAULT_SETTINGS } from '@/logic/sample';
-import { awakeMinutes, formatClockMin, formatDuration } from '@/logic/time';
+import { awakeMinutes, formatDuration } from '@/logic/time';
 import type { Settings } from '@/logic/types';
 import { useApp } from '@/store';
-import { color, radius, type } from '@/theme';
+import { color, type } from '@/theme';
 
 const DEMO: DailyFill = {
   day: '',
@@ -32,29 +33,6 @@ const DEMO: DailyFill = {
 };
 
 const emptyFill = (target: number): DailyFill => ({ day: '', state: 'empty', wellSpent: 0, target, fraction: 0, layers: [], included: [] });
-
-function TimeStepper({ label, value, onChange }: { label: string; value: number; onChange: (v: number) => void }) {
-  const step = (d: number) => {
-    tap();
-    onChange((value + d + 1440) % 1440);
-  };
-  return (
-    <View style={styles.time}>
-      <Text style={styles.timeLabel}>{label}</Text>
-      <View style={styles.timeRow}>
-        <Press accessibilityRole="button" accessibilityLabel={`${label} 30 minutes earlier`} onPress={() => step(-30)} style={styles.timeBtn}>
-          <Text style={styles.timeSign}>−</Text>
-        </Press>
-        <Text style={styles.timeValue} accessibilityLiveRegion="polite">
-          {formatClockMin(value)}
-        </Text>
-        <Press accessibilityRole="button" accessibilityLabel={`${label} 30 minutes later`} onPress={() => step(30)} style={styles.timeBtn}>
-          <Icon name="plus" size={18} />
-        </Press>
-      </View>
-    </View>
-  );
-}
 
 export default function Onboarding() {
   const finishOnboarding = useApp((s) => s.finishOnboarding);
@@ -188,11 +166,5 @@ const styles = StyleSheet.create({
   p: { ...type.body15, color: color.textSecondary },
   awake: { ...type.heading32, color: color.text },
   times: { flexDirection: 'row', gap: 12 },
-  time: { flex: 1, padding: 12, borderRadius: radius.lg, backgroundColor: color.surface1, borderWidth: 1, borderColor: color.hairline, gap: 8 },
-  timeLabel: { ...type.body13, color: color.textSecondary, textAlign: 'center' },
-  timeRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  timeBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: color.surface3, alignItems: 'center', justifyContent: 'center' },
-  timeSign: { fontSize: 22, lineHeight: 24, color: color.text },
-  timeValue: { ...type.body16Semi, color: color.text, fontVariant: ['tabular-nums'] },
   warn: { ...type.body13, color: color.textSecondary, textAlign: 'center' },
 });

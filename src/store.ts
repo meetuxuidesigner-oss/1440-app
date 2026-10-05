@@ -5,6 +5,7 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 
 import { checkLog, newId, type LogCheck } from '@/logic/log';
 import { makeSampleData } from '@/logic/sample';
+import { changeSchedule } from '@/logic/schedule';
 import type { Activity, AppData, Session, Settings } from '@/logic/types';
 
 const MIN = 60_000;
@@ -24,6 +25,8 @@ interface State {
   loadSampleWeek: () => void;
   reset: () => void;
   addActivity: (a: Omit<Activity, 'id' | 'createdAt'>) => void;
+  /** Change wake/sleep times. Past days keep their times. */
+  setSchedule: (wake: number, sleep: number) => void;
   startTimer: (activityId: string) => void;
   stopTimer: () => void;
   logSession: (activityId: string, start: number, end: number, replaceId?: string) => LogCheck;
@@ -65,6 +68,12 @@ export const useApp = create<State>()(
         const data = get().data;
         if (!data) return;
         set({ data: { ...data, activities: [...data.activities, { ...a, id: newId(), createdAt: Date.now() }] } });
+      },
+
+      setSchedule: (wake, sleep) => {
+        const data = get().data;
+        if (!data) return;
+        set({ data: changeSchedule(data, wake, sleep, Date.now()) });
       },
 
       startTimer: (activityId) => {
